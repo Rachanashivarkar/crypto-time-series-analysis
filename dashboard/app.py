@@ -1,39 +1,3 @@
-'''import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-
-st.title("Crypto Time Series Analysis Dashboard")
-
-
-data = pd.read_csv("../notebooks/data/processed/bitcoin_processed.csv")
-
-
-arima_pred = pd.read_csv("../results/arima_predictions.csv")
-sarima_pred = pd.read_csv("../results/sarima_predictions.csv")
-prophet_pred = pd.read_csv("../results/prophet_predictions.csv")
-lstm_pred = pd.read_csv("../results/lstm_predictions.csv")
-
-test = data["close"].tail(68)
-
-arima_values = arima_pred["prediction"]
-sarima_values = sarima_pred["prediction"]
-prophet_values = prophet_pred["yhat"].tail(len(test))
-lstm_values = lstm_pred["prediction"]
-
-fig, ax = plt.subplots(figsize=(10,5))
-
-ax.plot(test.values, label="Actual Price")
-ax.plot(arima_values.values, label="ARIMA")
-ax.plot(sarima_values.values, label="SARIMA")
-ax.plot(prophet_values.values, label="Prophet")
-ax.plot(range(len(test)-len(lstm_values), len(test)), lstm_values.values, label="LSTM")
-
-ax.legend()
-ax.set_title("Bitcoin Price Forecast Comparison")
-
-st.pyplot(fig)'''
-
-
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -48,12 +12,11 @@ st.title("Bitcoin Time Series Forecasting Dashboard")
 
 # LOAD DATA
 
-data = pd.read_csv("../notebooks/data/processed/bitcoin_processed.csv")
-
-arima_pred = pd.read_csv("../results/arima_predictions.csv")
-sarima_pred = pd.read_csv("../results/sarima_predictions.csv")
-prophet_pred = pd.read_csv("../results/prophet_predictions.csv")
-lstm_pred = pd.read_csv("../results/lstm_predictions.csv")
+data = pd.read_csv("data/processed/bitcoin_processed.csv")
+arima_pred = pd.read_csv("results/arima_predictions.csv")
+sarima_pred = pd.read_csv("results/sarima_predictions.csv")
+prophet_pred = pd.read_csv("results/prophet_predictions.csv")
+lstm_pred = pd.read_csv("results/lstm_predictions.csv")
 
 
 # MOVING AVERAGES
