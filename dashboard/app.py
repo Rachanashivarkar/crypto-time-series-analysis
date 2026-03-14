@@ -19,7 +19,6 @@ sarima_pred = pd.read_csv("../results/sarima_predictions.csv")
 prophet_pred = pd.read_csv("../results/prophet_predictions.csv")
 lstm_pred = pd.read_csv("../results/lstm_predictions.csv")
 
-
 # MOVING AVERAGES
 
 data["MA7"] = data["close"].rolling(7).mean()
