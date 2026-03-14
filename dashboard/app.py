@@ -13,7 +13,7 @@ st.title("Bitcoin Time Series Forecasting Dashboard")
 # LOAD DATA
 
 
-data = pd.read_csv("../data/processed/bitcoin_processed.csv")
+data = pd.read_csv("../data/bitcoin_processed.csv")
 arima_pred = pd.read_csv("../results/arima_predictions.csv")
 sarima_pred = pd.read_csv("../results/sarima_predictions.csv")
 prophet_pred = pd.read_csv("../results/prophet_predictions.csv")
