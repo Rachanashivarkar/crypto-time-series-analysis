@@ -16,11 +16,11 @@ def load_csv(relative_path):
         st.stop()
     return pd.read_csv(full_path)
 
-data = load_csv("data/processed/bitcoin_processed.csv")
-arima_pred = load_csv("results/arima_predictions.csv")
-sarima_pred = load_csv("results/sarima_predictions.csv")
-prophet_pred = load_csv("results/prophet_predictions.csv")
-lstm_pred = load_csv("results/lstm_predictions.csv")
+data = load_csv("../data/processed/bitcoin_processed.csv")
+arima_pred = load_csv("../results/arima_predictions.csv")
+sarima_pred = load_csv("../results/sarima_predictions.csv")
+prophet_pred = load_csv("../results/prophet_predictions.csv")
+lstm_pred = load_csv("../results/lstm_predictions.csv")
 
 data["MA7"] = data["close"].rolling(7).mean()
 data["MA30"] = data["close"].rolling(30).mean()
