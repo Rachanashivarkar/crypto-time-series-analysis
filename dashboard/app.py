@@ -3,35 +3,27 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-
 st.set_page_config(page_title="Crypto Time Series Dashboard", layout="wide")
 st.title("Bitcoin Time Series Forecasting Dashboard")
-
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def load_csv(relative_path):
     full_path = os.path.join(BASE_DIR, relative_path)
-    
-    if os.path.exists(full_path):
-        st.success(f"Loaded: {relative_path}")
-        return pd.read_csv(full_path)
-    else:
+    if not os.path.exists(full_path):
         st.error(f"File not found: {relative_path}")
+        st.write(os.listdir(BASE_DIR))
         st.stop()
+    return pd.read_csv(full_path)
 
-
-data = load_csv("../data/processed/bitcoin_processed.csv")
-
-arima_pred = load_csv("../results/arima_predictions.csv")
-sarima_pred = load_csv("../results/sarima_predictions.csv")
-prophet_pred = load_csv("../results/prophet_predictions.csv")
-lstm_pred = load_csv("../results/lstm_predictions.csv")
-
+data = load_csv("data/processed/bitcoin_processed.csv")
+arima_pred = load_csv("results/arima_predictions.csv")
+sarima_pred = load_csv("results/sarima_predictions.csv")
+prophet_pred = load_csv("results/prophet_predictions.csv")
+lstm_pred = load_csv("results/lstm_predictions.csv")
 
 data["MA7"] = data["close"].rolling(7).mean()
 data["MA30"] = data["close"].rolling(30).mean()
-
 
 st.subheader("Key Bitcoin Statistics")
 
@@ -44,18 +36,16 @@ col4.metric("Total Records", len(data))
 
 st.divider()
 
+st.subheader("Bitcoin Price Trend")
 
-st.subheader("📉 Bitcoin Price Trend")
+fig1, ax1 = plt.subplots(figsize=(10, 4))
+ax1.plot(data["close"], label="Closing Price")
+ax1.set_title("Bitcoin Closing Price Trend")
+ax1.set_xlabel("Time")
+ax1.set_ylabel("Price")
+ax1.legend()
 
-fig, ax = plt.subplots(figsize=(10, 4))
-ax.plot(data["close"], label="Closing Price")
-ax.set_title("Bitcoin Closing Price Trend")
-ax.set_xlabel("Time")
-ax.set_ylabel("Price")
-ax.legend()
-
-st.pyplot(fig)
-
+st.pyplot(fig1)
 
 st.subheader("Moving Average Analysis")
 
@@ -72,7 +62,6 @@ st.pyplot(fig2)
 
 st.divider()
 
-
 st.subheader("Forecast Comparison")
 
 test = data["close"].tail(68)
@@ -83,17 +72,12 @@ prophet_values = prophet_pred["yhat"].tail(len(test))
 lstm_values = lstm_pred["prediction"]
 
 fig3, ax3 = plt.subplots(figsize=(8, 4))
+
 ax3.plot(test.values, label="Actual")
 ax3.plot(arima_values.values, label="ARIMA")
 ax3.plot(sarima_values.values, label="SARIMA")
 ax3.plot(prophet_values.values, label="Prophet")
-
-
-ax3.plot(
-    range(len(test) - len(lstm_values), len(test)),
-    lstm_values.values,
-    label="LSTM"
-)
+ax3.plot(range(len(test) - len(lstm_values), len(test)), lstm_values.values, label="LSTM")
 
 ax3.set_title("Bitcoin Forecast Comparison")
 ax3.legend()
@@ -102,8 +86,7 @@ st.pyplot(fig3)
 
 st.divider()
 
-
-st.subheader("📉 Model Performance Comparison")
+st.subheader("Model Performance Comparison")
 
 metrics = pd.DataFrame({
     "Model": ["ARIMA", "SARIMA", "Prophet", "LSTM"],
@@ -126,16 +109,16 @@ with col2:
 
 st.divider()
 
-
-st.subheader("📊 Error Metrics Comparison")
+st.subheader("Error Metrics Comparison")
 
 fig5, ax5 = plt.subplots()
+
 ax5.plot(metrics["Model"], metrics["MAE"], marker="o", label="MAE")
 ax5.plot(metrics["Model"], metrics["RMSE"], marker="o", label="RMSE")
+
 ax5.set_title("Model Error Comparison")
 ax5.legend()
 
 st.pyplot(fig5)
 
-
-st.success("Dashboard Loaded Successfully ✅")
+st.success("Dashboard Loaded Successfully")
